@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import {toast} from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate, Link } from 'react-router-dom';
 import {getAuth, signInWithEmailAndPassword} from "firebase/auth"
 import { ReactComponent as ArrowRightIcon } from '../assets/svg/keyboardArrowRightIcon.svg';
@@ -29,14 +31,16 @@ export const SignIn = () => {
         
         const auth = getAuth();
 
+        
         const userCredential = await signInWithEmailAndPassword(auth, email, password)
 
+        // /checking user cred//
         if(userCredential.user){
             navigate('/')
         }
-        
+
     } catch (error) {
-        console.log(error);
+        toast.error('Wrong User Credential')
     }
   }
 

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import {getAuth, createUserWithEmailAndPassword, updateProfile} from "firebase/auth"
+import { toast } from 'react-toastify';
 import { db } from '../firebase.config';
 import {setDoc, doc, serverTimestamp} from "firebase/firestore"
 
@@ -52,7 +53,7 @@ export const SignUp = () => {
           navigate("/")
 
       } catch (error) {
-        console.log(error);
+        toast.error("Something went wrong with registration")
       }
 
   }
