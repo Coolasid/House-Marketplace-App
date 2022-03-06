@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Navbar } from './components/Navbar';
 import { ForgotPassword } from './ForgotPassword';
 import { Explore } from './pages/Explore';
 import { Offers } from './pages/Offers';
@@ -20,7 +21,7 @@ function App() {
             element={<ForgotPassword></ForgotPassword>}
           ></Route>
         </Routes>
-        {/* space for NavBar */}
+        <Navbar> </Navbar>
       </Router>
     </>
   );
