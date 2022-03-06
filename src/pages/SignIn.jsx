@@ -49,7 +49,7 @@ export const SignIn = () => {
     <div>
       <div className="pageContainer">
         <header>
-          <p className="pageHeader">Welcome Back!</p>
+          <div className="pageHeader">Welcome Back!</div>
         </header>
 
         <main>

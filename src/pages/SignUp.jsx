@@ -1,8 +1,12 @@
 import { useState } from 'react';
-import {getAuth, createUserWithEmailAndPassword, updateProfile} from "firebase/auth"
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from 'firebase/auth';
 import { toast } from 'react-toastify';
 import { db } from '../firebase.config';
-import {setDoc, doc, serverTimestamp} from "firebase/firestore"
+import { setDoc, doc, serverTimestamp } from 'firebase/firestore';
 
 import { useNavigate, Link } from 'react-router-dom';
 import { ReactComponent as ArrowRightIcon } from '../assets/svg/keyboardArrowRightIcon.svg';
@@ -17,7 +21,7 @@ export const SignUp = () => {
     password: '',
   });
 
-  const {name, email, password } = formData;
+  const { name, email, password } = formData;
 
   const navigate = useNavigate();
 
@@ -28,42 +32,43 @@ export const SignUp = () => {
     }));
   };
 
-  const onSubmit =  async(e) =>{
-      e.preventDefault();
+  const onSubmit = async (e) => {
+    e.preventDefault();
 
-      try {
-          const auth = getAuth();
+    try {
+      const auth = getAuth();
 
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
 
-          const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+      const user = userCredential.user;
 
-          const user = userCredential.user;
+      updateProfile(auth.currentUser, {
+        displayName: name,
+      });
 
-          updateProfile(auth.currentUser, {
-              displayName:name
-          })
+      ///making copy of the formData
+      const formDataCopy = { ...formData };
+      delete formDataCopy.password;
+      formDataCopy.timestamp = serverTimestamp();
 
-          ///making copy of the formData
-          const formDataCopy = {...formData};
-          delete formDataCopy.password
-          formDataCopy.timestamp = serverTimestamp()
+      ///setting user in db
+      await setDoc(doc(db, 'users', user.uid), formDataCopy);
 
-          ///setting user in db
-          await setDoc(doc(db, "users", user.uid), formDataCopy)
-
-          navigate("/")
-
-      } catch (error) {
-        toast.error("Something went wrong with registration")
-      }
-
-  }
+      navigate('/');
+    } catch (error) {
+      toast.error('Something went wrong with registration');
+    }
+  };
 
   return (
     <div>
       <div className="pageContainer">
         <header>
-          <p className="pageHeader">Welcome Back!</p>
+          <div className="pageHeader">Welcome Back!</div>
         </header>
 
         <main>
@@ -111,7 +116,7 @@ export const SignUp = () => {
             <div className="signUpBar">
               <p className="signUpText">Sign Up</p>
 
-              <button  className="signUpButton">
+              <button className="signUpButton">
                 <ArrowRightIcon
                   fill="white"
                   width="34px"
@@ -122,9 +127,9 @@ export const SignUp = () => {
           </form>
         </main>
       </div>
-        <OAuth></OAuth>
+      <OAuth></OAuth>
       <Link to="/sign-In" className="registerLink">
-        Sign In Insted 
+        Sign In Insted
       </Link>
     </div>
   );
