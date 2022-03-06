@@ -10,4 +10,6 @@ const firebaseConfig = {
   appId: "1:193020107020:web:a1748143265dfc8af3d129"
 };
 
+const app = initializeApp(firebaseConfig);
+
 export const db = getFirestore()
