@@ -7,6 +7,7 @@ import {setDoc, doc, serverTimestamp} from "firebase/firestore"
 import { useNavigate, Link } from 'react-router-dom';
 import { ReactComponent as ArrowRightIcon } from '../assets/svg/keyboardArrowRightIcon.svg';
 import visibilityIcon from '../assets/svg/visibilityIcon.svg';
+import { OAuth } from '../components/OAuth';
 
 export const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -121,7 +122,7 @@ export const SignUp = () => {
           </form>
         </main>
       </div>
-      {/* google OAuth */}
+        <OAuth></OAuth>
       <Link to="/sign-In" className="registerLink">
         Sign In Insted 
       </Link>

@@ -5,6 +5,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import {getAuth, signInWithEmailAndPassword} from "firebase/auth"
 import { ReactComponent as ArrowRightIcon } from '../assets/svg/keyboardArrowRightIcon.svg';
 import visibilityIcon from '../assets/svg/visibilityIcon.svg';
+import { OAuth } from '../components/OAuth';
 
 export const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -93,7 +94,7 @@ export const SignIn = () => {
 
         </main>
       </div>
-          {/* google OAuth */}
+          <OAuth></OAuth>
           <Link to="/sign-Up" className='registerLink'>
               Sign Up Insted</Link>
     </div>
