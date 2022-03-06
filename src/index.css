@@ -100,7 +100,7 @@ button {
   .listingDetails,
   .category,
   .explore {
-    margin: 3rem;
+    margin: 1.5rem;
   }
 }
 
@@ -314,7 +314,7 @@ button {
 }
 
 .exploreCategoryHeading {
-  margin-top: 3rem;
+  margin-top: 1.5rem;
 }
 
 .swiper-container {
