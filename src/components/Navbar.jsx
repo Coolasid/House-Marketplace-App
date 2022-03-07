@@ -51,7 +51,7 @@ export const Navbar = () => {
                   : 'navbarListItemName'
               }
             >
-              Offer
+              Offers
             </p>
           </li>
 
