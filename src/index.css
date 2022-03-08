@@ -612,6 +612,15 @@ button {
 
 .profile {
   /* margin-bottom: 2rem; */
+  height: 614px;
+  overflow: scroll;
+  scroll-behavior: smooth;
+  /* margin-top: 0; */
+}
+
+
+.profile::-webkit-scrollbar {
+  display: none;
 }
 
 .profileHeader {
@@ -804,7 +813,8 @@ button {
 }
 
 .createListingButton {
-  margin-top: 5rem;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
 }
 
 .offers {

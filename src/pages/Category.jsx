@@ -67,7 +67,7 @@ export const Category = () => {
         <div className="pageHeader">
           {params.categoryName === 'rent'
             ? 'Places for rent'
-            : 'Places for sale'}
+            : 'Places for sell'}
         </div>
       </header>
 
