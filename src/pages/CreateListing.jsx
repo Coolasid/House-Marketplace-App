@@ -149,9 +149,25 @@ export const CreateListing = () => {
       return
     })
 
-    
+    const formDataCopy = {
+      ...formData,
+      imgUrls,
+      geoLocation,
+      timestamp: serverTimestamp()
+    }
+
+    delete formDataCopy.images;
+    delete formDataCopy.address;
+    location && (formDataCopy.location = location)
+    !formDataCopy.offer && delete formDataCopy.discountedPrice
+
+    //setting to db in firestore
+    const docRef = await addDoc(collection(db, "listings"), formDataCopy)
 
     setLoading(false);
+
+    toast.success("Listing Saved ")
+    navigate(`/category/${formDataCopy.type}/${docRef.id}`)
   }
 
   const onMutate = (e) => {
