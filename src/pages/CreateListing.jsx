@@ -44,27 +44,54 @@ export const CreateListing = () => {
 
   const isMounted = useRef(true);
 
-  function onSubmit(e) {
+  async function onSubmit(e) {
     e.preventDefault();
 
     setLoading(true);
 
     if (discountedPrice >= regularPrice) {
-      setLoading(false)
+      setLoading(false);
       toast.error('Discounted price needs to be less than regular price');
       return;
     }
 
-    if(images.length > 6){
+    if (images.length > 6) {
       setLoading(false);
 
-      toast.error("Max 6 images")
-      return
+      toast.error('Max 6 images');
+      return;
     }
 
-    setLoading(false)
-    console.log(formData);
+    ///geocoding
 
+    let geoLocation = {};
+    let location;
+
+    if (geoLocationEnabled) {
+      const res = await fetch(
+        `http://api.positionstack.com/v1/forward?access_key=${process.env.REACT_APP_GEOCODE_API_KEY}&query=${address}`
+      );
+
+      const data = await res.json();
+      if (data.data.length) {
+        setLoading(false);
+
+        geoLocation.lat = data.data[0].latitude ?? 0;
+        geoLocation.lng = data.data[0].longitude ?? 0;
+
+        location = data.data[0].label;
+      }
+
+      if (data.data.length == 0) {
+        setLoading(false);
+        toast.error('Please enter a correct address');
+        return;
+      }
+    } else {
+      geoLocation.lat = latitude;
+      geoLocation.lng = longitude;
+      location = address;
+    }
   }
 
   const onMutate = (e) => {
@@ -82,7 +109,7 @@ export const CreateListing = () => {
     if (e.target.files) {
       setFormData((prevState) => ({
         ...prevState,
-        images: [...images ,e.target.files],
+        images: [...images, e.target.files],
       }));
     }
 
