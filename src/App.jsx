@@ -11,6 +11,7 @@ import { SignUp } from './pages/SignUp';
 import { Category } from './pages/Category';
 import { CreateListing } from './pages/CreateListing';
 import { Listing } from './pages/Listing';
+import { ContactOwner } from './pages/ContactOwner';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path='/category/:categoryName' element={<Category></Category>}></Route>
           <Route path='/create-listing' element={<CreateListing></CreateListing>}></Route>
           <Route path='/category/:categoryName/:listingId' element={<Listing></Listing>}></Route>
+          <Route path='/contact/:ownerId' element={<ContactOwner></ContactOwner>}></Route>
         </Routes>
         <Navbar> </Navbar>
       </Router>

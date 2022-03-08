@@ -1,12 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import ProgressBar from '@ramonak/react-progress-bar';
 import {
   getStorage,
   ref,
   uploadBytesResumable,
   getDownloadURL,
 } from 'firebase/storage';
-import {addDoc, collection, serverTimestamp} from "firebase/firestore"
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '../firebase.config';
 import { useNavigate } from 'react-router-dom';
 import { Spinner } from '../components/Spinner';
@@ -15,6 +16,7 @@ import { v4 as uuid } from 'uuid';
 
 export const CreateListing = () => {
   const [geoLocationEnabled, setGeoLocationEnabled] = useState(true);
+  // const [progressBarS, setProgressBar] = useState(0);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     type: 'rent',
@@ -108,66 +110,67 @@ export const CreateListing = () => {
 
         const fileName = `${auth.currentUser.uid}-${image.name}-${uuid()}`;
 
-        const storageRef = ref(storage, "images/"+ fileName);
-        
-        const uploadTask =  uploadBytesResumable(storageRef,  image)
+        const storageRef = ref(storage, 'images/' + fileName);
+
+        const uploadTask = uploadBytesResumable(storageRef, image);
 
         uploadTask.on(
-          'state_changed', (snapshot)=>{
-
-            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-            console.log("upload is " + progress + "% done"); 
+          'state_changed',
+          (snapshot) => {
+            const progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             
-            switch (snapshot.state){
+            console.log('upload is ' + progress + '% done');
+
+            switch (snapshot.state) {
               case 'paused':
                 console.log('uploading is pasued');
-                break
+                break;
               case 'running':
                 console.log('upload is running');
-                break
+                break;
             }
           },
-          (error)=>{
-            reject(error)
-          }, 
+          (error) => {
+            reject(error);
+          },
           () => {
-
-            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL)=>{
-              resolve(downloadURL)
-            })
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+              resolve(downloadURL);
+            });
           }
-        )
+        );
       });
     };
 
     const imgUrls = await Promise.all(
-      [...images].map((image)=> storeImage(image))
-    ).catch(()=>{
+      [...images].map((image) => storeImage(image))
+    ).catch(() => {
       setLoading(false);
 
-      toast.error("Images is not uploaded")
-      return
-    })
+      toast.error('Images is not uploaded');
+      return;
+    });
 
     const formDataCopy = {
       ...formData,
       imgUrls,
       geoLocation,
-      timestamp: serverTimestamp()
-    }
+      timestamp: serverTimestamp(),
+    };
 
     delete formDataCopy.images;
     delete formDataCopy.address;
-    location && (formDataCopy.location = location)
-    !formDataCopy.offer && delete formDataCopy.discountedPrice
+    location && (formDataCopy.location = location);
+    !formDataCopy.offer && delete formDataCopy.discountedPrice;
 
     //setting to db in firestore
-    const docRef = await addDoc(collection(db, "listings"), formDataCopy)
+    const docRef = await addDoc(collection(db, 'listings'), formDataCopy);
 
-    setLoading(false);
+    // setLoading(false);
 
-    toast.success("Listing Saved ")
-    navigate(`/category/${formDataCopy.type}/${docRef.id}`)
+    toast.success('Listing Saved ');
+    navigate(`/category/${formDataCopy.type}/${docRef.id}`);
   }
 
   const onMutate = (e) => {
@@ -215,9 +218,9 @@ export const CreateListing = () => {
     };
   }, [isMounted]);
 
-  if (loading) {
-    return <Spinner></Spinner>;
-  }
+  // if (loading) {
+  //   return <Spinner></Spinner>;
+  // }
 
   return (
     <div className="profile">
@@ -473,6 +476,13 @@ export const CreateListing = () => {
             required
           />
 
+          <br />
+          <br />
+          {/* {progressBarS === 0 ? (
+            <></>
+          ) : (
+            <ProgressBar completed={progressBarS.toFixed(0)}></ProgressBar>
+          )} */}
           <button className="primaryButton createListingButton" type="submit">
             {' '}
             Create Listing
