@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { Spinner } from '../components/Spinner';
+import { toast } from 'react-toastify';
 
 export const CreateListing = () => {
   const [geoLocationEnabled, setGeoLocationEnabled] = useState(true);
@@ -17,7 +18,7 @@ export const CreateListing = () => {
     offer: true,
     regularPrice: 0,
     discountedPrice: 0,
-    imageUrls: [],
+    images: [],
     latitude: 0,
     longitude: 0,
   });
@@ -33,7 +34,7 @@ export const CreateListing = () => {
     offer,
     regularPrice,
     discountedPrice,
-    imageUrls,
+    images,
     latitude,
     longitude,
   } = formData;
@@ -45,42 +46,54 @@ export const CreateListing = () => {
 
   function onSubmit(e) {
     e.preventDefault();
+
+    setLoading(true);
+
+    if (discountedPrice >= regularPrice) {
+      setLoading(false)
+      toast.error('Discounted price needs to be less than regular price');
+      return;
+    }
+
+    if(images.length > 6){
+      setLoading(false);
+
+      toast.error("Max 6 images")
+      return
+    }
+
+    setLoading(false)
     console.log(formData);
+
   }
 
   const onMutate = (e) => {
-
     let boolean = null;
 
-    if(e.target.value === "true"){
-      boolean = true
+    if (e.target.value === 'true') {
+      boolean = true;
     }
 
-    if(e.target.value === "false"){
-      boolean = false
+    if (e.target.value === 'false') {
+      boolean = false;
     }
 
     //Files
-    if(e.target.files){
-
-      setFormData((prevState)=>({
+    if (e.target.files) {
+      setFormData((prevState) => ({
         ...prevState,
-        imageUrls: e.target.files
-      }))
-
+        images: [...images ,e.target.files],
+      }));
     }
 
     //text/ boolean/number
 
-    if(!e.target.files){
-
+    if (!e.target.files) {
       setFormData((prevState) => ({
         ...prevState,
-        [e.target.id] : boolean ?? e.target.value
-      }))
-
+        [e.target.id]: boolean ?? e.target.value,
+      }));
     }
-
   };
 
   useEffect(() => {
@@ -349,7 +362,7 @@ export const CreateListing = () => {
           <input
             className="formInputFile"
             type="file"
-            id="imageUrls"
+            id="images"
             onChange={onMutate}
             max="6"
             accept=".jpg, .png, .jpeg"
@@ -357,7 +370,10 @@ export const CreateListing = () => {
             required
           />
 
-          <button className='primaryButton createListingButton' type='submit'> Create Listing</button>
+          <button className="primaryButton createListingButton" type="submit">
+            {' '}
+            Create Listing
+          </button>
         </form>
       </main>
     </div>
