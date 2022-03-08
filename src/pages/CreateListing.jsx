@@ -1,8 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from 'firebase/storage';
+import {addDoc, collection, serverTimestamp} from "firebase/firestore"
+import { db } from '../firebase.config';
 import { useNavigate } from 'react-router-dom';
 import { Spinner } from '../components/Spinner';
 import { toast } from 'react-toastify';
+import { v4 as uuid } from 'uuid';
 
 export const CreateListing = () => {
   const [geoLocationEnabled, setGeoLocationEnabled] = useState(true);
@@ -18,7 +27,7 @@ export const CreateListing = () => {
     offer: true,
     regularPrice: 0,
     discountedPrice: 0,
-    images: [],
+    images: {},
     latitude: 0,
     longitude: 0,
   });
@@ -74,8 +83,6 @@ export const CreateListing = () => {
 
       const data = await res.json();
       if (data.data.length) {
-        setLoading(false);
-
         geoLocation.lat = data.data[0].latitude ?? 0;
         geoLocation.lng = data.data[0].longitude ?? 0;
 
@@ -92,6 +99,59 @@ export const CreateListing = () => {
       geoLocation.lng = longitude;
       location = address;
     }
+
+    /// store Images in firebase
+
+    const storeImage = async (image) => {
+      return new Promise((resolve, reject) => {
+        const storage = getStorage();
+
+        const fileName = `${auth.currentUser.uid}-${image.name}-${uuid()}`;
+
+        const storageRef = ref(storage, "images/"+ fileName);
+        
+        const uploadTask =  uploadBytesResumable(storageRef,  image)
+
+        uploadTask.on(
+          'state_changed', (snapshot)=>{
+
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+            console.log("upload is " + progress + "% done"); 
+            
+            switch (snapshot.state){
+              case 'paused':
+                console.log('uploading is pasued');
+                break
+              case 'running':
+                console.log('upload is running');
+                break
+            }
+          },
+          (error)=>{
+            reject(error)
+          }, 
+          () => {
+
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL)=>{
+              resolve(downloadURL)
+            })
+          }
+        )
+      });
+    };
+
+    const imgUrls = await Promise.all(
+      [...images].map((image)=> storeImage(image))
+    ).catch(()=>{
+      setLoading(false);
+
+      toast.error("Images is not uploaded")
+      return
+    })
+
+    
+
+    setLoading(false);
   }
 
   const onMutate = (e) => {
@@ -109,7 +169,7 @@ export const CreateListing = () => {
     if (e.target.files) {
       setFormData((prevState) => ({
         ...prevState,
-        images: [...images, e.target.files],
+        images: e.target.files,
       }));
     }
 
