@@ -93,6 +93,8 @@ button {
 .listingDetails,
 .category,
 .explore {
+  /* overflow: scroll;
+  height: 630px; */
   margin: 1rem;
 }
 @media (min-width: 1024px) {
@@ -102,6 +104,7 @@ button {
   .listingDetails,
   .category,
   .explore {
+
     margin: 1.5rem;
   }
 }
@@ -147,7 +150,7 @@ button {
   left: 0;
   bottom: 0;
   right: 0;
-  height: 85px;
+  height: 70px;
   background-color: #ffffff;
   z-index: 1000;
   display: flex;
@@ -620,8 +623,7 @@ button {
   /* margin-top: 0; */
 }
 
-
-.profile::-webkit-scrollbar {
+::-webkit-scrollbar {
   display: none;
 }
 

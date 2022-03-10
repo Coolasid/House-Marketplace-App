@@ -484,7 +484,7 @@ export const CreateListing = () => {
             <ProgressBar completed={progressBarS.toFixed(0)}></ProgressBar>
           )} */}
           <button className="primaryButton createListingButton" type="submit">
-            {' '}
+            
             Create Listing
           </button>
         </form>
