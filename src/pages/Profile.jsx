@@ -6,6 +6,7 @@ import { db } from '../firebase.config';
 import { Link, useNavigate } from 'react-router-dom';
 import arrowRight from "../assets/svg/keyboardArrowRightIcon.svg"
 import homeIcon from "../assets/svg/homeIcon.svg"
+import {} from 'firebase/firestore'
 
 export const Profile = () => {
   const auth = getAuth();

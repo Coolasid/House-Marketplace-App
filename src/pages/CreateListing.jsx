@@ -57,7 +57,7 @@ export const CreateListing = () => {
 
   async function onSubmit(e) {
     e.preventDefault();
-
+    toast.success("please wait for sometime")
     setLoading(true);
 
     if (discountedPrice >= regularPrice) {
