@@ -16,7 +16,7 @@ import { v4 as uuid } from 'uuid';
 
 export const CreateListing = () => {
   const [geoLocationEnabled, setGeoLocationEnabled] = useState(true);
-  // const [progressBarS, setProgressBar] = useState(0);
+  const [progressBarS, setProgressBar] = useState(0);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     type: 'rent',
@@ -60,7 +60,7 @@ export const CreateListing = () => {
     toast.success('please wait for sometime');
     setLoading(true);
 
-    if (discountedPrice >= regularPrice) {
+    if (+discountedPrice >= +regularPrice) {
       setLoading(false);
       toast.error('Discounted price needs to be less than regular price');
       return;
@@ -88,7 +88,7 @@ export const CreateListing = () => {
 
       const data = await res.json();
       console.log(data);
-      let req = data.results[0]
+      let req = data.results[0];
 
       if (data.results.length) {
         geoLocation.lat = req.geometry.lat ?? 0;
@@ -98,7 +98,6 @@ export const CreateListing = () => {
       }
 
       if (data.results.length == 0) {
-        
         setLoading(false);
         toast.error('Please enter a correct address');
         return;
@@ -225,9 +224,9 @@ export const CreateListing = () => {
     };
   }, [isMounted]);
 
-  // if (loading) {
-  //   return <Spinner></Spinner>;
-  // }
+  if (loading) {
+    return <Spinner></Spinner>;
+  }
 
   return (
     <div className="profile">
@@ -485,11 +484,11 @@ export const CreateListing = () => {
 
           <br />
           <br />
-          {/* {progressBarS === 0 ? (
+          {progressBarS === 0 ? (
             <></>
           ) : (
             <ProgressBar completed={progressBarS.toFixed(0)}></ProgressBar>
-          )} */}
+          )}
           <button className="primaryButton createListingButton" type="submit">
             Create Listing
           </button>
