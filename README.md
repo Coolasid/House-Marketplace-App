@@ -9,10 +9,16 @@
 * firebase 9
 * firestore
 
+## NPM Packages Used:
+* leaflet
+* react-leaflet
+* react-toastify
+* swiper
+* uuid
+
 ## Features:
 #### &nbsp; User-side: User login | Google OAuth login | Listing of homes for sale or rent | Forward Geocoding | An interactive map for a specific listing | Mobile-friendly website.
-## Product Description:
-#### &nbsp;&nbsp; This browser Application allows user to shop online with functionality like search, sort, filter its becomes easy for the user to select the desired product with minimum amount of time.
+
 ### **Home Page**
 ![](https://github.com/Coolasid/Bestbuy-U3-CW-Project/blob/8573089c5a1de30f1e9fd1d673d76015b1e56a1a/Screenshot%20(965).png)
 #### From the home page user can redirect to login page or can start shopping. Home page contains **search bar** which search will give you all sorts of suggestions based on the key input provided by the user and it will show all suggestions based on the input and it  require the user to just write up the product’s name  by typing  it will show suggestions based on it. (i.e — typing “sony” our top suggestion will be related to all the sony products that are present in out database). Clicking on menu you will seen a dropbox and there you will get all the products categories.
