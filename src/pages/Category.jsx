@@ -18,6 +18,7 @@ import { ListingItem } from '../components/ListingItem';
 export const Category = () => {
   const [listings, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [lastFetchedListing, setLastFetchedListing] = useState(null);
 
   const params = useParams();
 
@@ -34,12 +35,15 @@ export const Category = () => {
           listingsRef,
           where('type', '==', params.categoryName),
           orderBy('timestamp', 'desc'),
-          limit(10)
+          limit(5)
         );
 
         //execute query
 
         const querySnap = await getDocs(q);
+
+        const lastVisible = querySnap.docs[querySnap.docs.length-1];
+        setLastFetchedListing(lastVisible);
 
         const listings = [];
 
@@ -61,6 +65,47 @@ export const Category = () => {
     fetchListing();
   }, []);
 
+  //pagination / load more
+  const onFetchMoreListings = async () => {
+    try {
+      //get a reference
+
+      const listingsRef = collection(db, 'listings');
+
+      //create a query
+
+      const q = query(
+        listingsRef,
+        where('type', '==', params.categoryName),
+        orderBy('timestamp', 'desc'),
+        startAfter(lastFetchedListing),
+        limit(5)
+      );
+
+      //execute query
+
+      const querySnap = await getDocs(q);
+
+      const lastVisible = querySnap.docs[querySnap.docs.length - 1];
+      setLastFetchedListing(lastVisible);
+
+      const listings = [];
+
+      querySnap.forEach((doc) => {
+        // console.log(doc.data());
+        return listings.push({
+          id: doc.id,
+          data: doc.data(),
+        });
+      });
+
+      setListing((prevState)=> [...prevState, ...listings]);
+      setLoading(false);
+    } catch (error) {
+      toast.error('Colud not fetch listing');
+    }
+  };
+
   return (
     <div className="category">
       <header>
@@ -76,14 +121,22 @@ export const Category = () => {
       ) : listings && listings.length > 0 ? (
         <>
           <main>
-              <ul className="categoryListings">
-                  {listings.map((listing)=>{
-                   return <ListingItem listing={listing.data} id={listing.id} key={listing.id} ></ListingItem>
-                  })}
-                </ul>
-
+            <ul className="categoryListings">
+              {listings.map((listing) => {
+                return (
+                  <ListingItem
+                    listing={listing.data}
+                    id={listing.id}
+                    key={listing.id}
+                  ></ListingItem>
+                );
+              })}
+            </ul>
           </main>
-        
+
+          <br />
+          <br />
+          {lastFetchedListing && <p className="loadMore" onClick={onFetchMoreListings}>Load More</p>}
         </>
       ) : (
         <p> No listing for {params.categoryName} </p>
