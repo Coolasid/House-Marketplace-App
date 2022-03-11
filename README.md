@@ -10,7 +10,7 @@
 * firestore
 
 ## Features:
-#### &nbsp;&nbsp; User-side: User login | Google OAuth login | Listing of homes for sale or rent | Forward Geocoding | An interactive map for a specific listing | Mobile-friendly website.
+#### &nbsp; User-side: User login | Google OAuth login | Listing of homes for sale or rent | Forward Geocoding | An interactive map for a specific listing | Mobile-friendly website.
 ## Product Description:
 #### &nbsp;&nbsp; This browser Application allows user to shop online with functionality like search, sort, filter its becomes easy for the user to select the desired product with minimum amount of time.
 ### **Home Page**
