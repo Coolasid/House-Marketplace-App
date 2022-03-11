@@ -57,9 +57,12 @@ export const Slider = () => {
                   className="swiperSlideDiv"
                   style={{
                     background: `url(${data.imgUrls[0]}) center no-repeat`,
-                    backgroundSize: 'cover'
+                    backgroundSize: 'cover',
                   }}
-                ></div>
+                >
+                  <p className="swiperSlideText">{data.name}</p>
+                  <p className="swiperSlidePrice"> ₹ { data.dicountedPrice ?? data.regularPrice}</p>
+                </div>
               </SwiperSlide>
             );
           })}
