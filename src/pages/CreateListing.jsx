@@ -57,7 +57,7 @@ export const CreateListing = () => {
 
   async function onSubmit(e) {
     e.preventDefault();
-    toast.success("please wait for sometime")
+    toast.success('please wait for sometime');
     setLoading(true);
 
     if (discountedPrice >= regularPrice) {
@@ -79,20 +79,25 @@ export const CreateListing = () => {
     let location;
 
     // f23dbf6fad3b7bb936bba2ab27bb2d22ab22627;
+    //api.positionstack.com/v1/forward?access_key=${process.env.REACT_APP_GEOCODE_API_KEY}&query=${address}
+    //
     if (geoLocationEnabled) {
       const res = await fetch(
-        `https://api.positionstack.com/v1/forward?access_key=${process.env.REACT_APP_GEOCODE_API_KEY}&query=${address}`
+        `https://api.opencagedata.com/geocode/v1/json?key=a44a837638e0409b86131295e9ed2dd2&q=${address}`
       );
 
       const data = await res.json();
-      if (data.data.length) {
-        geoLocation.lat = data.data[0].latitude ?? 0;
-        geoLocation.lng = data.data[0].longitude ?? 0;
+      console.log(data);
+      let req = data.results[0]
 
-        location = data.data[0].label;
+      if (data.results.length) {
+        geoLocation.lat = req.geometry.lat ?? 0;
+        geoLocation.lng = req.geometry.lng ?? 0;
+
+        location = req.formatted;
       }
 
-      if (data.data.length == 0) {
+      if (data.results.length == 0) {
         setLoading(false);
         toast.error('Please enter a correct address');
         return;
@@ -120,7 +125,7 @@ export const CreateListing = () => {
           (snapshot) => {
             const progress =
               (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            
+
             console.log('upload is ' + progress + '% done');
 
             switch (snapshot.state) {
@@ -485,7 +490,6 @@ export const CreateListing = () => {
             <ProgressBar completed={progressBarS.toFixed(0)}></ProgressBar>
           )} */}
           <button className="primaryButton createListingButton" type="submit">
-            
             Create Listing
           </button>
         </form>
