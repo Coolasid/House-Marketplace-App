@@ -47,7 +47,7 @@ export const Listing = () => {
               <div
                 style={{
                   background: `url(${image}) center no-repeat`,
-                  backgroundSize:"cover"
+                  backgroundSize: 'cover',
                 }}
                 className="swiperSlideDiv"
               ></div>
@@ -67,7 +67,7 @@ export const Listing = () => {
           }, 2000);
         }}
       >
-        <img src={shareIcon} alt="" />
+        <img src={shareIcon} className="shareIconDivImg" alt="" />
       </div>
 
       {shareLinkCopied && <p className="linkCopied">Link Copied!</p>}
