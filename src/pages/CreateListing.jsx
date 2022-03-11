@@ -81,7 +81,7 @@ export const CreateListing = () => {
     // f23dbf6fad3b7bb936bba2ab27bb2d22ab22627;
     if (geoLocationEnabled) {
       const res = await fetch(
-        `http://api.positionstack.com/v1/forward?access_key=${process.env.REACT_APP_GEOCODE_API_KEY}&query=${address}`
+        `https://api.positionstack.com/v1/forward?access_key=${process.env.REACT_APP_GEOCODE_API_KEY}&query=${address}`
       );
 
       const data = await res.json();
