@@ -56,7 +56,7 @@ export const Listing = () => {
         })}
       </Swiper>
 
-      <div
+      {/* <div
         className="shareIconDiv"
         onClick={() => {
           navigator.clipboard.writeText(window.location.href);
@@ -68,7 +68,7 @@ export const Listing = () => {
         }}
       >
         <img src={shareIcon} className="shareIconDivImg" alt="" />
-      </div>
+      </div> */}
 
       {shareLinkCopied && <p className="linkCopied">Link Copied!</p>}
 
