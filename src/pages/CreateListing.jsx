@@ -98,6 +98,7 @@ export const CreateListing = () => {
       }
 
       if (data.results.length == 0) {
+        
         setLoading(false);
         toast.error('Please enter a correct address');
         return;
