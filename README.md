@@ -5,7 +5,6 @@
 * HTML
 * CSS
 * React
-* Redux
 * firebase 9
 * firestore
 
